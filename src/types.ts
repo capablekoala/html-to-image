@@ -91,4 +91,9 @@ export interface Options {
    *
    */
   fetchRequestInit?: RequestInit
+
+  /**
+   * A transformer, e.g. for injecting a proxy
+   */
+  urlFetchTransform?: CallableFunction
 }

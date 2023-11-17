@@ -293,6 +293,18 @@ When supplied, the toCanvas function will return a blob matching the given image
 
 Defaults to `image/png`  
 
+### fetchRequestInit
+An the second argument to pass to the javascript `fetch()` call when inlining resources
+
+Defaults to unset
+
+### urlFetchTransform
+A callable function which can be used to modify URLs before fetching them for inlining return the new url.
+
+Use to inject query params, or, to set an HTTP proxy such as "CORS anywhere".
+
+Defaults to unset
+
 ## Browsers
 
 Only standard lib is currently used, but make sure your browser supports:

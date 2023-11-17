@@ -73,16 +73,22 @@ export async function resourceToDataURL(
     return cache[cacheKey]
   }
 
+  let fetchURL = resourceUrl
+
   // ref: https://developer.mozilla.org/en/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest#Bypassing_the_cache
   if (options.cacheBust) {
     // eslint-disable-next-line no-param-reassign
-    resourceUrl += (/\?/.test(resourceUrl) ? '&' : '?') + new Date().getTime()
+    fetchURL += (/\?/.test(fetchURL) ? '&' : '?') + new Date().getTime()
+  }
+
+  if (options.urlFetchTransform) {
+    fetchURL = options.urlFetchTransform(fetchURL, options)
   }
 
   let dataURL: string
   try {
     const content = await fetchAsDataURL(
-      resourceUrl,
+      fetchURL,
       options.fetchRequestInit,
       ({ res, result }) => {
         if (!contentType) {
@@ -96,7 +102,7 @@ export async function resourceToDataURL(
   } catch (error) {
     dataURL = options.imagePlaceholder || ''
 
-    let msg = `Failed to fetch resource: ${resourceUrl}`
+    let msg = `Failed to fetch resource: ${fetchURL}`
     if (error) {
       msg = typeof error === 'string' ? error : error.message
     }
